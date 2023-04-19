@@ -1,4 +1,8 @@
-@@ -5,4 +5,3 @@ sudo chmod u+r /etc/nginx/nginx.conf
-pkill apache
-sudo sed -i -e 's/80/8080/g' /etc/nginx/sites-available/default
-sudo -u nginx nginx -c /etc/nginx/nginx.conf
+#!/usr/bin/env bash
+# Fixe server bug
+chmod 644 /etc/nginx/nginx.conf
+sed -Ei 's/\s*#?\s*user .*/user nginx;/' /etc/nginx/nginx.conf
+sed -Ei 's/(listen (\[::\]:)?80) /\180 /' /etc/nginx/sites-enabled/default
+pkill apache2
+su nginx -s /bin/bash -c 'service nginx restart'
+# Done
