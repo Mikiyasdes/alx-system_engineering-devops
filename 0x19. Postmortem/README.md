@@ -1,39 +1,38 @@
-0x19-postmortem
-I WILL FIND YOU AND I WILL FIX YOU
+0.  Using one of the web stack debugging project issue or an outage you have personally face, write a postmortem. Most of you will never have faced an outage, so just get creative and invent your own :)
 
-Issue Summary
-16/02/2022 From 9:15 AM to 10:00 AM UTC+1 all requests for the homepage to our servers got a 404 response
+Requirements:
 
-Timeline
-9:10 AM : Updates push
-9:15 AM : Noticing the problem
-9:15 AM : Notifying the both front end and backend teams
-9:20 AM : Successful change rollback
-9:24 AM : Server Restarts begin
-9:27 AM : 100% of traffic back online
-9:30 AM : start debugging the push with the problem
-9:50 AM : Probelm fixed and pushed the changes
-9:55 AM : Server restart begins
-10:00 AM : 100% traffic back online with the new updates
-Root cause and resolution
-After rolling back changes we knew that the changes were made by the front end team so we took the broken changes and run them on a test server which replicated same problem, our server uses apache2 and apache2 error logs didn't give enought infomation about the problem so we traced the apache2 process using strace and when a request is sent strace tool catchs a lot of error and after some scaning fo these errors we found the error wich is a typo in page file extention >
+Issue Summary (that is often what executives will read) must contain:
+duration of the outage with start and end times (including timezone)
+what was the impact (what service was down/slow? What were user experiencing? How many % of the users were affected?)
+what was the root cause
+Timeline (format bullet point, format: time - keep it short, 1 or 2 sentences) must contain:
 
-.phpp
+when was the issue detected
+how was the issue detected (monitoring alert, an engineer noticed something, a customer complained…)
+actions taken (what parts of the system were investigated, what were the assumption on the root cause of the issue)
+misleading investigation/debugging paths that were taken
+which team/individuals was the incident escalated to
+how the incident was resolved
+Root cause and resolution must contain:
 
-instead of
+explain in detail what was causing the issue
+explain in detail how the issue was fixed
+Corrective and preventative measures must contain:
 
-.php
+what are the things that can be improved/fixed (broadly speaking)
+a list of tasks to address the issue (be very specific, like a TODO, example: patch Nginx server, add monitoring on server memory…)
+Be brief and straight to the point, between 400 to 600 words
 
-and to fix that we just search in our main directory using grep for that typo
+While postmortem format can vary, stick to this one so that you can get properly reviewed by your peers.
 
-grep -inR ".phpp" .
+Please, remember that these blogs must be written in English to further your technical ability in a variety of settings.
 
-after fixing the error we pushed back the changes and restarted the servers
 
-10:00 AM : 100% of trafic back online with the new updates
-Corrective and preventative measures
-To prevent similar problems from happening again we will
 
-Create an automated test pipeline for every update push
-Add a monitoring software to our servers which will monitor lot of things and one of them Network Traffic resquests and responses and configure it to make an lert to the teams when too much non desired responses were sent like 404
-Create a tests for every new update and the teams shouuld not push until those tests pass
+
+1. We are constantly stormed by a quantity of information, it’s tough to get people to read you.
+
+Make your post-mortem attractive by adding humour, a pretty diagram or anything that would catch your audience attention.
+
+Please, remember that these blogs must be written in English to further your technical ability in a variety of settings.
